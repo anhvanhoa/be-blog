@@ -6,9 +6,11 @@ import (
 	"be-blog/src/entities"
 	"be-blog/src/libs/errors"
 	"be-blog/src/libs/jwt"
+	"be-blog/src/mail"
 	"time"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/spf13/viper"
 )
 
 func CheckVerifyEmail(tokenEmail string) (string, bool) {
@@ -29,7 +31,22 @@ func CheckVerifyEmail(tokenEmail string) (string, bool) {
 }
 
 func ResendCodeVerifyEmail(email string) error {
-	_, err := config.DB.Model(&entities.Auth{}).Where("email = ?", email).Set("code_mail = ?", RandomOTP()).Update()
+	var user entities.Auth
+	err := config.DB.Model(&user).Where("email = ?", email).Select()
+	if err != nil {
+		if err == pg.ErrNoRows {
+			return errors.NewErrorBadRequest("Email không tồn tại")
+		}
+		return err
+	}
+	code := RandomOTP()
+	go mail.SendMail(mail.PayloadMail{
+		Tos:      []string{user.Email},
+		Template: "REGISTER",
+		Data:     map[string]interface{}{"fullName": user.FullName, "code": code},
+		From:     viper.GetString("mailSender"),
+	})
+	_, err = config.DB.Model(&entities.Auth{}).Where("email = ?", email).Set("code_mail = ?", RandomOTP()).Update()
 	if err != nil {
 		return err
 	}

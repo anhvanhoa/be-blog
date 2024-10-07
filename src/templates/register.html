@@ -1,0 +1,63 @@
+{% extends 'layout.html' %} 
+{% block title %}Xác thực tài khoản{% endblock %} 
+{% block content %}
+<section style="margin-top: 1rem">
+    <p
+        style="
+            margin-top: 0.5rem; /* mt-2 */
+            font-size: 16px;
+            line-height: 1.75; /* leading-loose */
+            color: #323437; /* text-gray-600 */
+        "
+    >
+    Xin chào {{ fullName }}, mã xác thực của bạn là:
+    </p>
+
+    <div
+        style="
+            display: flex; /* flex */
+            align-items: center; /* items-center */
+            margin-top: 1rem; /* mt-4 */
+            gap: 1rem; /* gap-x-4 */
+            font-size: 16px; /* text-base */
+        "
+    >
+        {% for c in code %} 
+            <p
+                style="
+                        text-align: center;
+                        padding: 0.2rem 0.8rem;
+                        font-size: 1.4rem;
+                        font-weight: 500;
+                        color: #4299e1;
+                        border: 1px solid #4299e1;
+                        border-radius: 0.6rem;
+                        border-color: var(--color-border-blue-400);
+                        margin: 0;
+                        margin-right: 8px;
+                "
+            >
+                {{ c }}
+            </p>
+        {% endfor %}
+    </div>
+
+    <p
+        style="
+            line-height: 1.75; /* leading-loose */
+            color: #323437; /* text-gray-600 */
+            font-size: 16px;
+        "
+    >
+        Mã xác thực này sẽ hết hạn sau 10 phút.
+    </p>
+    <p
+        style="
+            color: #323437; /* text-gray-600 */
+            font-size: 16px;
+        "
+    >
+        Trân thành cảm ơn ban đã sử dụng dịch vụ của chúng tôi.
+    </p>
+</section>
+{% endblock %}

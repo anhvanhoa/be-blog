@@ -5,6 +5,7 @@ import (
 	"be-blog/src/libs/errors"
 	"be-blog/src/libs/jwt"
 	"be-blog/src/libs/logger"
+	"be-blog/src/services/session"
 	"strings"
 
 	"github.com/kataras/iris/v12"
@@ -21,6 +22,17 @@ func MiddlewarePermission(ctx iris.Context) {
 	idToken := ctx.GetCookie(constants.COOKIE_AUTH)
 	if idToken == "" {
 		err := errors.NewErrorUnauthorized("Bạn chưa đăng nhập")
+		logger.Log(ctx, err)
+		return
+	}
+	sessionLogin, err := session.GetSessionByToken(idToken)
+	if err != nil {
+		err := errors.NewError(err).SetStatus(iris.StatusUnauthorized)
+		logger.Log(ctx, err)
+		return
+	}
+	if sessionLogin.Token != idToken || sessionLogin.Token == "" {
+		err := errors.NewErrorUnauthorized("Token không hợp lệ")
 		logger.Log(ctx, err)
 		return
 	}

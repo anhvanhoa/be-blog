@@ -14,4 +14,7 @@ mailserver:
     port: 587
     username: toplaiphaiwin@gmail.com
     email: toplaiphaiwin@gmail.com
-    password: 123456
+    password: ydhw abgh wwen mkqx
+    nameProvider: Ánh Văn Hóa
+
+mailSender: toplaiphaiwin@gmail.com

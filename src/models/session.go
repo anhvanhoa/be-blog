@@ -1,9 +1,8 @@
-package entities
+package models
 
 import "time"
 
 type Session struct {
-	tableName struct{}  `pg:"sessions"`
 	UserID    string    `json:"user_id"`
 	Token     string    `json:"token"`
 	IP        string    `json:"ip"`

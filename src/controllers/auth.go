@@ -3,9 +3,11 @@ package controllers
 import (
 	"be-blog/src/constants"
 	"be-blog/src/libs/errors"
+	"be-blog/src/libs/jwt"
 	"be-blog/src/libs/logger"
 	"be-blog/src/models"
 	"be-blog/src/services/auth"
+	"be-blog/src/services/session"
 	"net/http"
 
 	"github.com/asaskevich/govalidator"
@@ -133,6 +135,18 @@ func Login(ctx iris.Context) {
 		return
 	}
 	result, token, err := auth.Login(req)
+	if err != nil {
+		err := errors.NewError(err).BadRequest()
+		logger.Log(ctx, err)
+		return
+	}
+	ip := ctx.RemoteAddr()
+	err = session.CreateSession(models.Session{
+		UserID:    result.ID,
+		Token:     token,
+		IP:        ip,
+		ExpiredAt: jwt.CreateExpTime(constants.SIX_MONTH).Unix(),
+	})
 	if err != nil {
 		err := errors.NewError(err).BadRequest()
 		logger.Log(ctx, err)

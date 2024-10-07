@@ -12,4 +12,5 @@ func RegisterRouter(app *iris.Application) {
 	registerBlogRouter(api)
 	registerCategoryRouter(api)
 	registerAuthRouter(api)
+	MailRouter(api)
 }

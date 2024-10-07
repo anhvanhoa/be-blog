@@ -6,12 +6,14 @@ import (
 	"be-blog/src/entities"
 	"be-blog/src/libs/errors"
 	"be-blog/src/libs/jwt"
+	"be-blog/src/mail"
 	"be-blog/src/models"
 	"strings"
 
 	"github.com/alexedwards/argon2id"
 	"github.com/go-pg/pg/v10"
 	"github.com/google/uuid"
+	"github.com/spf13/viper"
 	"github.com/xlzd/gotp"
 )
 
@@ -51,6 +53,12 @@ func Register(body models.RegisterReq) (*models.RegisterRes, error) {
 	if err != nil {
 		return nil, err
 	}
+	go mail.SendMail(mail.PayloadMail{
+		Tos:      []string{newUser.Email},
+		Template: "REGISTER",
+		Data:     map[string]interface{}{"fullName": newUser.FullName, "code": newUser.CodeMail},
+		From:     viper.GetString("mailSender"),
+	})
 	result := models.RegisterRes{
 		ID:         newUser.ID,
 		FullName:   newUser.FullName,
