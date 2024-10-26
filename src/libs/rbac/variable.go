@@ -2,22 +2,14 @@ package rbac
 
 import "github.com/kataras/iris/v12"
 
+type FunPermission func(roles ...string) bool
+
 type Route struct {
 	app    iris.Party
 	Path   string
 	Method string
-	Name   string
 	Auth   bool
-}
-
-type RoutePer struct {
-	Path    string
-	Method  string
-	Name    string
-	Auth    bool
-	NamePer string
+	Per    FunPermission
 }
 
 var routers = map[string]*Route{}
-
-var routersPer = []RoutePer{}

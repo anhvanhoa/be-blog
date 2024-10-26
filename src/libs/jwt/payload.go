@@ -2,6 +2,7 @@ package jwt
 
 type PayloadUser struct {
 	ID       string
+	Avatar   string
 	FullName string
 	UserName string
 	Email    string

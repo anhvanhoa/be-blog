@@ -130,7 +130,7 @@ func Login(ctx iris.Context) {
 		return
 	}
 	if _, err := govalidator.ValidateStruct(req); err != nil {
-		err := errors.NewError(err).BadRequest()
+		err := errors.NewError(err.(govalidator.Errors).Errors()[0]).BadRequest()
 		logger.Log(ctx, err)
 		return
 	}
@@ -152,10 +152,29 @@ func Login(ctx iris.Context) {
 		logger.Log(ctx, err)
 		return
 	}
-	ctx.SetCookieKV(constants.COOKIE_AUTH, token, iris.CookieHTTPOnly(true), iris.CookiePath("/"), CookieSecure())
+	ctx.SetCookieKV(constants.COOKIE_AUTH, token, iris.CookieHTTPOnly(true), iris.CookiePath("/"), iris.CookieSameSite(http.SameSiteNoneMode), CookieSecure(), iris.CookieDomain("localhost"))
 	ctx.JSON(Response{
 		Data:    result,
 		Message: "Đăng nhập thành công",
+	})
+}
+
+func Logout(ctx iris.Context) {
+	token := ctx.GetCookie(constants.COOKIE_AUTH)
+	if token == "" {
+		err := errors.NewErrorBadRequest("Token không hợp lệ")
+		logger.Log(ctx, err)
+		return
+	}
+	err := session.DeleteSessionByToken(token)
+	if err != nil {
+		err := errors.NewError(err).BadRequest()
+		logger.Log(ctx, err)
+		return
+	}
+	ctx.RemoveCookie(constants.COOKIE_AUTH)
+	ctx.JSON(Response{
+		Message: "Đăng xuất thành công",
 	})
 }
 

@@ -23,6 +23,7 @@ func (e *Error) SetStatus(status int) *Error {
 }
 
 func (e *Error) BadRequest() *Error {
+	e.Type = "BAD_REQUEST"
 	e.Status = 400
 	return e
 }

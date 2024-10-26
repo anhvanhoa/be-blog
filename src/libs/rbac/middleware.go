@@ -44,24 +44,26 @@ func MiddlewarePermission(ctx iris.Context) {
 		return
 	}
 	roles := strings.Split(payloadToken.Roles, ",")
-	ok := checkPer(roles, route.Path(), route.Method())
+	isAdmin := checkAdmin(roles...)
+	if isAdmin {
+		ctx.Values().Set("user", payloadToken)
+		ctx.Next()
+		return
+	}
+	ok := router.Per(roles...)
 	if !ok {
 		err := errors.NewErrorUnauthorized("Bạn không có quyền truy cập")
 		logger.Log(ctx, err)
 		return
 	}
+	ctx.Values().Set("user", payloadToken)
 	ctx.Next()
 }
 
-func checkPer(roles []string, path, method string) bool {
-	for _, router := range routersPer {
-		if router.Path == path && router.Method == method {
-			for _, role := range roles {
-				if role == router.NamePer {
-					return true
-				}
-			}
-			return false
+func checkAdmin(roles ...string) bool {
+	for _, role := range roles {
+		if strings.EqualFold(role, RoleAdmin) {
+			return true
 		}
 	}
 	return false

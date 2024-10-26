@@ -1,0 +1,37 @@
+{% extends 'layout.html' %} 
+{% block title %}Trả lời bình luận bài viết{% endblock %} 
+{% block content %}
+<section style="margin-top: 1rem">
+    <p
+        style="
+            margin-top: 0.5rem; /* mt-2 */
+            font-size: 16px;
+            line-height: 1.75; /* leading-loose */
+            color: #323437; /* text-gray-600 */
+        "
+    >
+        Bình luận của bạn đã nhận được một trả lời mới từ {{ fullName }} về bài viết {{ nameBlog }}
+    </p>
+    <p
+        style="
+            line-height: 1.75; /* leading-loose */
+            color: #323437; /* text-gray-600 */
+            font-size: 16px;
+        "
+    >
+        {{ content }}
+    </p>
+    <p
+        style="
+            line-height: 1.75; /* leading-loose */
+            color: #323437; /* text-gray-600 */
+            font-size: 16px;
+        "
+    >
+        <a href="{{ link }}" style="color: #4299e1">Xem bình luận</a>
+    </p>
+    <p style="color: #323437; /* text-gray-600 */ font-size: 16px">
+        Trân thành cảm ơn ban đã sử dụng dịch vụ của chúng tôi.
+    </p>
+</section>
+{% endblock %}

@@ -29,12 +29,13 @@ func Login(body models.LoginReq) (*models.LoginRes, string, error) {
 	if !ok {
 		return nil, "", errors.NewErrorBadRequest("Mật khẩu không chính xác")
 	}
-
 	token, err := jwt.CreateTokenUser(jwt.PayloadUser{
 		ID:       user.ID,
 		FullName: user.FullName,
 		UserName: user.Username,
+		Avatar:  user.Avatar,
 		Email:    user.Email,
+		Roles:    strings.Join(user.Roles, ","),
 	}, constants.SIX_MONTH)
 
 	if err != nil {
@@ -46,5 +47,6 @@ func Login(body models.LoginReq) (*models.LoginRes, string, error) {
 		FullName: user.FullName,
 		Username: user.Username,
 		Email:    user.Email,
+		Token:    token,
 	}, token, nil
 }

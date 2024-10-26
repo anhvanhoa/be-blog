@@ -9,5 +9,5 @@ import (
 
 func MailRouter(app router.Party) {
 	router := rbac.NewRoute(app, &rbac.Config{RelativePath: "/mail"})
-	router.Get("/histories", "Lịch sử gửi mail", true, controllers.HistoriesMail)
+	router.Get("/histories", rbac.AllowAll(), true, controllers.HistoriesMail) //Lịch sử gửi mail
 }

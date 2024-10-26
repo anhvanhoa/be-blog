@@ -1,6 +1,9 @@
 package config
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/go-pg/pg/v10"
 	"github.com/spf13/viper"
 )
@@ -17,7 +20,20 @@ func InitDatabase() *pg.DB {
 	if DB == nil {
 		panic("Không thể kết nối đến cơ sở dữ liệu")
 	}
+	DB.AddQueryHook(dbLogger{})
 	return DB
+}
+
+type dbLogger struct{}
+
+func (d dbLogger) BeforeQuery(c context.Context, q *pg.QueryEvent) (context.Context, error) {
+	return c, nil
+}
+
+func (d dbLogger) AfterQuery(c context.Context, q *pg.QueryEvent) error {
+	bytes, _ := q.FormattedQuery()
+	fmt.Println("After query :" + string(bytes))
+	return nil
 }
 
 func Transaction(fn func(db *pg.Tx) error) error {

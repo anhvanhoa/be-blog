@@ -6,6 +6,7 @@ import (
 	"be-blog/src/entities"
 	"be-blog/src/libs/errors"
 	"be-blog/src/libs/jwt"
+	"be-blog/src/libs/rbac"
 	"be-blog/src/mail"
 	"be-blog/src/models"
 	"strings"
@@ -35,6 +36,7 @@ func Register(body models.RegisterReq) (*models.RegisterRes, error) {
 		Email:    strings.ToLower(body.Email),
 		Password: hash,
 		CodeMail: RandomOTP(),
+		Roles:    []string{rbac.RoleUser},
 		Status:   constants.STATUS_INACTIVE,
 	}
 	_, err = config.DB.Model(&newUser).Insert()

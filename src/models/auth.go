@@ -35,4 +35,5 @@ type LoginRes struct {
 	FullName string `json:"fullName"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
+	Token    string `json:"token"`
 }

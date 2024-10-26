@@ -2,7 +2,6 @@ package logger
 
 import (
 	"be-blog/src/libs/errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -53,7 +52,6 @@ func InitLog(config Config) {
 		config.Ext = ".txt"
 	}
 	fullPath := nameFileLog(config.Folder, config.Ext)
-	fmt.Println(fullPath)
 	file, err := os.OpenFile(fullPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatal(err)

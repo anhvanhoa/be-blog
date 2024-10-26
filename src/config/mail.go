@@ -29,6 +29,18 @@ var MailTemplates []MailTemplate = []MailTemplate{
 		Data:     map[string]interface{}{"code": "123456", "fullName": "Anh Nguyen"},
 		Subject:  "Xác thực tài khoản",
 	},
+	{
+		Id:       "COMMENT",
+		Template: "src/templates/comment.html",
+		Data:     map[string]interface{}{"nameBlog": "Bài viết mới", "fullName": "Người bình luận", "content": "Nội dung bình luận", "link": "http://localhost:3000/blog/1"},
+		Subject:  "Bình luận mới: {{nameBlog}}",
+	},
+	{
+		Id:       "COMMENT_REPLY",
+		Template: "src/templates/comment_reply.html",
+		Data:     map[string]interface{}{"nameBlog": "Trả lời bình luận bài viết", "fullName": "Người bình luận", "content": "Nội dung bình luận", "link": "http://localhost:3000/blog/1"},
+		Subject:  "Trả lời bình luận bài viết",
+	},
 }
 
 func InitMail() {

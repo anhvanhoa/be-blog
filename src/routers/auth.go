@@ -9,11 +9,10 @@ import (
 
 func registerAuthRouter(app router.Party) {
 	router := rbac.NewRoute(app, &rbac.Config{RelativePath: "/auth"})
-	router.Post("/register", "Đăng ký tài khoản", false, controllers.Register)
-	router.Get("/verify-account", "Kiểm tra tài khoản xác thực", false, controllers.CheckVerifyEmail)
-	router.Post("/verify-account", "Xác thực tài khoản", false, controllers.VerifyEmail)
-	router.Get("/resend-verify-email", "Gửi lại mã xác thực", false, controllers.ResendCodeVerifyEmail)
-	router.Post("/login", "Đăng nhập", false, controllers.Login)
-	// router.Post("/logout", logout)
-	// router.Post("/refresh", refresh)
+	router.Post("/register", rbac.AllowAll(), false, controllers.Register)                        //Đăng ký tài khoản
+	router.Get("/verify-account", rbac.AllowAll(), false, controllers.CheckVerifyEmail)           //Kiểm tra tài khoản xác thực
+	router.Post("/verify-account", rbac.AllowAll(), false, controllers.VerifyEmail)               //Xác thực tài khoản
+	router.Get("/resend-verify-email", rbac.AllowAll(), false, controllers.ResendCodeVerifyEmail) //Gửi lại mã xác thực
+	router.Post("/login", rbac.AllowAll(), false, controllers.Login)                              //Đăng nhập
+	router.Post("/logout", rbac.AllowAll(), true, controllers.Logout)                             //Đăng xuất
 }

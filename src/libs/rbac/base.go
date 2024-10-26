@@ -6,7 +6,6 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-
 type Config struct {
 	RelativePath string
 }
@@ -23,56 +22,47 @@ func AddRoute(r *Route) {
 	routers[key] = r
 }
 
-func (r *Route) CheckPermission(roles ...string) bool {
-	for _, role := range roles {
-		if role == "admin" {
-			return true
-		}
-	}
-	return false
-}
-
-func (r *Route) Get(Path, Name string, Auth bool, Handlers ...iris.Handler) {
+func (r Route) Get(Path string, Per FunPermission, Auth bool, Handlers ...iris.Handler) {
 	r.Method = http.MethodGet
 	r.Path = r.app.GetRelPath() + Path
-	r.Name = Name
 	r.Auth = Auth
+	r.Per = Per
 	r.app.Get(Path, Handlers...)
-	AddRoute(r)
+	AddRoute(&r)
 }
 
-func (r *Route) Post(Path, Name string, Auth bool, Handlers ...iris.Handler) {
+func (r Route) Post(Path string, Per FunPermission, Auth bool, Handlers ...iris.Handler) {
 	r.Method = http.MethodPost
 	r.Path = r.app.GetRelPath() + Path
-	r.Name = Name
+	r.Per = Per
 	r.Auth = Auth
 	r.app.Post(Path, Handlers...)
-	AddRoute(r)
+	AddRoute(&r)
 }
 
-func (r *Route) Put(Path, Name string, Auth bool, Handlers ...iris.Handler) {
+func (r Route) Put(Path string, Per FunPermission, Auth bool, Handlers ...iris.Handler) {
 	r.Method = http.MethodPut
 	r.Path = r.app.GetRelPath() + Path
-	r.Name = Name
+	r.Per = Per
 	r.Auth = Auth
 	r.app.Put(Path, Handlers...)
-	AddRoute(r)
+	AddRoute(&r)
 }
 
-func (r *Route) Delete(Path, Name string, Auth bool, Handlers ...iris.Handler) {
+func (r Route) Delete(Path string, Per FunPermission, Auth bool, Handlers ...iris.Handler) {
 	r.Method = http.MethodDelete
 	r.Path = r.app.GetRelPath() + Path
-	r.Name = Name
+	r.Per = Per
 	r.Auth = Auth
 	r.app.Delete(Path, Handlers...)
-	AddRoute(r)
+	AddRoute(&r)
 }
 
-func (r *Route) Patch(Path, Name string, Auth bool, Handlers ...iris.Handler) {
+func (r Route) Patch(Path string, Per FunPermission, Auth bool, Handlers ...iris.Handler) {
 	r.Method = http.MethodPatch
 	r.Path = r.app.GetRelPath() + Path
-	r.Name = Name
+	r.Per = Per
 	r.Auth = Auth
 	r.app.Patch(Path, Handlers...)
-	AddRoute(r)
+	AddRoute(&r)
 }

@@ -49,6 +49,7 @@ func CreateTokenUser(payload PayloadUser, exp string) (string, error) {
 		"full_name": payload.FullName,
 		"user_name": payload.UserName,
 		"email":     payload.Email,
+		"avatar":    payload.Avatar,
 		"roles":     payload.Roles,
 		"exp":       CreateExpTime(exp).Unix(),
 	})
