@@ -84,7 +84,7 @@ func GetBlogBySlug(slug string) (models.BlogBySlug, error) {
             WHERE t.status = TRUE
         ) AS tags
     FROM blogs b
-    JOIN categories c ON b.category_id = c.id WHERE b.slug = ?;`
+    JOIN categories c ON b.category_id = c.id WHERE b.slug = ? AND b.status = TRUE;`
 	_, err := config.DB.Query(&blog, query, slug)
 	if err != nil {
 		return blog, err
@@ -110,7 +110,7 @@ func GetBlogBySlug(slug string) (models.BlogBySlug, error) {
             ) AS tags
         FROM blogs b
         JOIN categories c ON b.category_id = c.id
-        WHERE b.id != ?;`
+        WHERE b.id != ? AND b.status = TRUE;`
 	_, err = config.DB.Query(&blog.BlogsRelated, queryRelated, blog.ID)
 	if err != nil {
 		return blog, err
