@@ -34,6 +34,7 @@ type Blog struct {
 	Thumbnail    string    `json:"thumbnail"`
 	Status       bool      `json:"status"`
 	UpdatedAt    time.Time `json:"updatedAt"`
+	CreatedAt    time.Time `json:"createdAt"`
 }
 
 type BlogBySlug struct {

@@ -9,5 +9,5 @@ import (
 
 func registerAccountRouter(app router.Party) {
 	router := rbac.NewRoute(app, &rbac.Config{RelativePath: "/account"})
-	router.Get("/me", rbac.AllowAll(), true, controllers.Login)
+	router.Get("/me", rbac.AllowAll(), true, controllers.Me)
 }

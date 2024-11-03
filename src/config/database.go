@@ -17,7 +17,8 @@ func InitDatabase() *pg.DB {
 		Password: viper.GetString("database.password"),
 		Database: viper.GetString("database.name"),
 	})
-	if DB == nil {
+	err := DB.Ping(context.Background())
+	if err != nil {
 		panic("Không thể kết nối đến cơ sở dữ liệu")
 	}
 	DB.AddQueryHook(dbLogger{})

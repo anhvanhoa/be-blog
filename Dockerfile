@@ -17,7 +17,8 @@ RUN go mod tidy
 COPY . .
 
 # Build the Go application
-RUN go build -o be-web ./src/main.go
+
+RUN go build -o server ./src/main.go
 
 # Final stage
 FROM alpine:latest
@@ -28,13 +29,15 @@ WORKDIR /app
 RUN mkdir /app/logs
 
 # Copy the binary from the build stage
-COPY --from=build-env /app/be-web .
+COPY --from=build-env /app/server .
+
+ENV ENV_MODE=production
 
 # Copy configuration files
-COPY dev.config.yaml .
+COPY production.config.yaml .
 
 # Expose the necessary port
 EXPOSE 8080
 
 # Set the entry point
-ENTRYPOINT ["./be-web"]
+ENTRYPOINT ["./server"]

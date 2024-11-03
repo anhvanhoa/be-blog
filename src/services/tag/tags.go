@@ -28,7 +28,7 @@ func GetTags() ([]entities.Tag, error) {
 
 func CreateTag(tag models.TagReq) error {
 	status := true
-	newTag := entities.Tag{
+	newTag := entities.TagCreate{
 		ID:        uuid.New().String(),
 		Status:    &status,
 		Name:      tag.Name,

@@ -11,29 +11,35 @@ import (
 	"github.com/google/uuid"
 )
 
-func GetBlogs(status bool) ([]models.Blog, error) {
+func GetBlogs(tag string) ([]models.Blog, error) {
 	var blogs []models.Blog = []models.Blog{}
+	condition := ""
+	if tag != "" {
+		condition = " AND EXISTS (SELECT 1 FROM UNNEST(b.tags) AS tag_id JOIN tags t ON t.id = tag_id WHERE t.slug = ?)"
+	}
 	query := `
-SELECT
-    b.id,
-    b.title,
-    b.description,
-    b.slug,
-	b.thumbnail,
-	c.slug as slug_category,
-	c.name as category,
-    b.updated_at,
-	b.status,
-	(
-        SELECT ARRAY_AGG(json_build_object('id', t.id, 'slug', t.slug, 'name', t.name, 'variables', t.variables))
-        FROM UNNEST(b.tags) AS tag_id
-        JOIN tags t ON t.id = tag_id
-        WHERE t.status = TRUE
-    ) AS tags
-FROM blogs b
-JOIN categories c ON b.category_id = c.id WHERE b.status = ?;`
+	SELECT
+		b.id,
+		b.title,
+		b.description,
+		b.slug,
+		b.thumbnail,
+		c.slug AS slug_category,
+		c.name AS category,
+		b.updated_at,
+		b.created_at,
+		b.status,
+		(
+			SELECT ARRAY_AGG(json_build_object('id', t.id, 'slug', t.slug, 'name', t.name, 'variables', t.variables))
+			FROM UNNEST(b.tags) AS tag_id
+			JOIN tags t ON t.id = tag_id
+			WHERE t.status = TRUE
+		) AS tags
+	FROM blogs b
+	JOIN categories c ON b.category_id = c.id
+	WHERE b.status = TRUE` + condition + ` ORDER BY b.created_at DESC;`
 
-	_, err := config.DB.Query(&blogs, query, status)
+	_, err := config.DB.Query(&blogs, query, tag)
 	return blogs, err
 }
 
@@ -57,7 +63,7 @@ SELECT
         WHERE t.status = TRUE
     ) AS tags
 FROM blogs b
-JOIN categories c ON b.category_id = c.id`
+JOIN categories c ON b.category_id = c.id ORDER BY b.created_at DESC`
 
 	_, err := config.DB.Query(&blogs, query)
 	return blogs, err
@@ -184,6 +190,7 @@ func GetBlogsByCategory(slug string) (models.BlogCategory, error) {
                 b.thumbnail,
                 c.slug as slug_category,
                 b.updated_at,
+                b.created_at,
                 (
                     SELECT ARRAY_AGG(json_build_object('id', t.id, 'slug', t.slug, 'name', t.name, 'variables', t.variables))
                     FROM UNNEST(b.tags) AS tag_id
@@ -191,7 +198,7 @@ func GetBlogsByCategory(slug string) (models.BlogCategory, error) {
                     WHERE t.status = TRUE
                 ) AS tags
             FROM blogs b
-            JOIN categories c ON b.category_id = c.id WHERE c.id = ?;`
+            JOIN categories c ON b.category_id = c.id WHERE c.id = ? ORDER BY b.created_at DESC;`
 		_, err = tx.Query(&category.Blogs, queryBlogs, category.ID)
 
 		if err != nil {
@@ -229,9 +236,6 @@ func CreateBlog(body models.BlogReq) error {
 	}
 
 	_, err = config.DB.Model(&blog).Insert()
-	if err != nil {
-		return err
-	}
 	if err != nil {
 		return err
 	}

@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/spf13/viper"
@@ -12,7 +13,15 @@ func init() {
 	if err != nil {
 		log.Fatalf("Error getting absolute path: %v", err)
 	}
-	viper.SetConfigName("dev.config")
+	mode := os.Getenv("ENV_MODE")
+	if mode == "dev" {
+		viper.SetConfigName("dev.config")
+	} else if mode == "production" {
+		viper.SetConfigName("production.config")
+	} else {
+		panic("ENV_MODE is invalid")
+	}
+
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(absPath)
 	err = viper.ReadInConfig()

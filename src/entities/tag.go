@@ -4,6 +4,15 @@ import (
 	"time"
 )
 
+type TagCreate struct {
+	tableName struct{} `pg:"tags"`
+	ID        string   `json:"id"`
+	Name      string   `json:"name"`
+	Slug      string   `json:"slug"`
+	Status    *bool    `json:"status"`
+	Variables string   `json:"variables"`
+}
+
 type Tag struct {
 	tableName struct{}  `pg:"tags"`
 	ID        string    `json:"id"`

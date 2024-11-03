@@ -1,0 +1,29 @@
+port: 8080
+database:
+  host: database
+  port: 5432
+  user: anhvanhoa
+  password: maatkhaaunayflafbawtsbuowcj
+  name: website
+jwt:
+  secret: hOgK+kZ2Q7PM8VLQAusza3V7fW0hYMbiEyQrqXfke7R8Bcd6+zlWxOiCWxgOoSOKgKgE9TDE7k9dVPeGR5YEmG6d6Nl6HjNYLm+/cPI9hHHirpfYHeqWmyB5sPvoEva/QVTmmuw+Oanao9EkZUeh7CqQ07a1/hDwdgi8OoPasstaY1QQrh1dqgFzgdbjwUBye98vMYoUy369d7HZAgj+diuUcxfGSqeIHd/eLg88TWZ22BkqDR29eHy91X6sfb57n+bBp49XOKDUH0nrlQf3cJg2B2vtthFgQBlQPfY2r/9yYGRWhc9hrnCFqJtzGmQNchbxGOf4vApFmwlU6nyXZw
+  expiration: 3600
+cors:
+  origins: 
+    - http://website-anhvanhoa:3000
+    - http://localhost:3000
+  methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  headers: "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  credentials: true
+  maxAge: 3600
+mailserver:
+  - host: smtp.gmail.com
+    port: 587
+    username: toplaiphaiwin@gmail.com
+    email: toplaiphaiwin@gmail.com
+    password: ydhw abgh wwen mkqx
+    nameProvider: Ánh Văn Hóa
+
+mailSender: toplaiphaiwin@gmail.com
+
+hostClient: http://localhost:3000

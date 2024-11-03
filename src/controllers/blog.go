@@ -12,7 +12,8 @@ import (
 )
 
 func GetBlogs(ctx iris.Context) {
-	blogs, err := blog_service.GetBlogs(true)
+	tag := ctx.URLParam("tag")
+	blogs, err := blog_service.GetBlogs(tag)
 	if err != nil {
 		logger.Log(ctx, err)
 		return
@@ -134,7 +135,6 @@ func UpdateBlog(ctx iris.Context) {
 		Message: "Success",
 	})
 }
-
 
 func DeleteBlog(ctx iris.Context) {
 	id := ctx.Params().Get("id")
