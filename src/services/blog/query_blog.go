@@ -206,6 +206,9 @@ func GetBlogsByCategory(slug string) (models.BlogCategory, error) {
 		}
 		return nil
 	})
+	if category.Blogs == nil {
+		category.Blogs = []models.Blog{}
+	}
 	return category, err
 }
 
@@ -243,7 +246,7 @@ func CreateBlog(body models.BlogReq) error {
 }
 
 func UpdateBlog(id string, body models.BlogReq) error {
-	blog := entities.Blog{
+	blog := entities.BlogUpdate{
 		ID:          id,
 		Title:       body.Title,
 		ContentMd:   body.ContentMd,
