@@ -35,7 +35,7 @@ func UploadImage(ctx iris.Context) {
 		return
 	}
 	defer file.Close()
-	err = media_service.UploadImage(file, info, userId, title)
+	_, err = media_service.UploadImage(file, info, userId, title)
 	if err != nil {
 		logger.Log(ctx, err)
 		return

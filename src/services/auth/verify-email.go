@@ -32,7 +32,7 @@ func CheckVerifyEmail(tokenEmail string) (string, bool) {
 
 func ResendCodeVerifyEmail(email string) error {
 	var user entities.Auth
-	err := config.DB.Model(&user).Where("email = ?", email).Select()
+	err := config.DB.Model(&user).Where("status = 'inactive' AND email = ?", email).Select()
 	if err != nil {
 		if err == pg.ErrNoRows {
 			return errors.NewErrorBadRequest("Email không tồn tại")

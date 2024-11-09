@@ -19,6 +19,8 @@ func CreateExpTime(exp string) time.Time {
 		return time.Now().Add(time.Hour * 24 * 30 * 6)
 	case constants.ONE_YEAR:
 		return time.Now().Add(time.Hour * 24 * 365)
+	case constants.TEN_MIN:
+		return time.Now().Add(time.Minute * 10)
 	default:
 		return time.Now().Add(time.Hour)
 	}
@@ -71,6 +73,7 @@ func ParseTokenPayloadUser(tokenString string) (*PayloadUser, error) {
 		UserName: claims["user_name"].(string),
 		Email:    claims["email"].(string),
 		Roles:    claims["roles"].(string),
+		Avatar:   claims["avatar"].(string),
 		Exp:      int64(claims["exp"].(float64)),
 	}, nil
 }
@@ -96,5 +99,29 @@ func ParseTokenPayloadVerifyEmail(tokenString string) (*PayloadVerify, error) {
 	return &PayloadVerify{
 		Email: clain["email"].(string),
 		Exp:   int64(clain["exp"].(float64)),
+	}, nil
+}
+
+func CreateForgotPassToken(payload PayloadResetPass, exp string) (string, error) {
+	secret := viper.GetString("jwt.secret")
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"email": payload.Email,
+		"exp":   CreateExpTime(exp).Unix(),
+	})
+	t, err := token.SignedString([]byte(secret))
+	if err != nil {
+		return "", err
+	}
+	return t, nil
+}
+
+func ParseTokenPayloadForgotPass(tokenString string) (*PayloadResetPass, error) {
+	claims, err := ParseToken(tokenString)
+	if err != nil {
+		return nil, err
+	}
+	return &PayloadResetPass{
+		Email: claims["email"].(string),
+		Exp:   int64(claims["exp"].(float64)),
 	}, nil
 }

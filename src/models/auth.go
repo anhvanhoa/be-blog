@@ -2,7 +2,6 @@ package models
 
 // register
 type RegisterReq struct {
-	FullName        string `json:"fullName" valid:"required~Vui lòng nhập họ tên"`
 	Username        string `json:"username" valid:"required~Vui lòng nhập tên đăng nhập"`
 	Email           string `json:"email" valid:"email~Email không hợp lệ"`
 	Password        string `json:"password" valid:"required~Vui lòng nhập mật khẩu"`
@@ -20,7 +19,14 @@ type RegisterRes struct {
 // verify-email
 
 type VerifyEmailReq struct {
+	T    string `json:"t" valid:"required~Token không hợp lệ"`
 	Code string `json:"code" valid:"required~Vui lòng nhập mã xác thực"`
+}
+
+// forgot-password
+
+type ForgotPasswordReq struct {
+	Email string `json:"email" valid:"email~Email không hợp lệ"`
 }
 
 // login
@@ -36,4 +42,12 @@ type LoginRes struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Token    string `json:"token"`
+}
+
+// reset-password
+
+type ResetPasswordReq struct {
+	T               string `json:"t" valid:"required~Token không hợp lệ"`
+	Password        string `json:"password" valid:"required~Vui lòng nhập mật khẩu"`
+	ConfirmPassword string `json:"confirmPassword" valid:"required~Vui lòng nhập mật khẩu xác nhận"`
 }

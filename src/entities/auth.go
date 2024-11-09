@@ -14,3 +14,9 @@ type Auth struct {
 	Roles     []string `pg:",array"`
 	Status    StatusAuth
 }
+
+type UserResetPass struct {
+	tableName struct{} `pg:"users"`
+	Email     string
+	Password  string
+}

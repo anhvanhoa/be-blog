@@ -41,6 +41,12 @@ var MailTemplates []MailTemplate = []MailTemplate{
 		Data:     map[string]interface{}{"nameBlog": "Trả lời bình luận bài viết", "fullName": "Người bình luận", "content": "Nội dung bình luận", "link": "http://localhost:3000/blog/1"},
 		Subject:  "Trả lời bình luận bài viết",
 	},
+	{
+		Id:       "FORGOT_PASSWORD",
+		Template: "src/templates/forgot_password.html",
+		Data:     map[string]interface{}{"link": viper.GetString("hostClient") + "/forgot-password/token"},
+		Subject:  "Yêu cầu đổi mật khẩu",
+	},
 }
 
 func InitMail() {

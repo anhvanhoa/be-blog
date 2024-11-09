@@ -15,4 +15,7 @@ func registerAuthRouter(app router.Party) {
 	router.Get("/resend-verify-email", rbac.AllowAll(), false, controllers.ResendCodeVerifyEmail) //Gửi lại mã xác thực
 	router.Post("/login", rbac.AllowAll(), false, controllers.Login)                              //Đăng nhập
 	router.Post("/logout", rbac.AllowAll(), true, controllers.Logout)                             //Đăng xuất
+	router.Post("/forgot-password", rbac.AllowAll(), false, controllers.ForgotPassword)           //Quên mật khẩu
+	router.Get("/reset-password", rbac.AllowAll(), false, controllers.CheckResetPassword)         //Đặt lại mật khẩu
+	router.Post("/reset-password", rbac.AllowAll(), false, controllers.ResetPassword)             //Đặt lại mật khẩu
 }

@@ -32,7 +32,6 @@ func Register(body models.RegisterReq) (*models.RegisterRes, error) {
 	newUser := entities.Auth{
 		ID:       Id.String(),
 		Username: strings.ToLower(body.Username),
-		FullName: body.FullName,
 		Email:    strings.ToLower(body.Email),
 		Password: hash,
 		CodeMail: RandomOTP(),

@@ -64,18 +64,6 @@ func CheckVerifyEmail(ctx iris.Context) {
 }
 
 func VerifyEmail(ctx iris.Context) {
-	tokenEmail := ctx.URLParam("t")
-	if tokenEmail == "" {
-		err := errors.NewErrorBadRequest("Token không hợp lệ")
-		logger.Log(ctx, err)
-		return
-	}
-	email, ok := auth.CheckVerifyEmail(tokenEmail)
-	if !ok {
-		err := errors.NewErrorBadRequest("Token không hợp lệ")
-		logger.Log(ctx, err)
-		return
-	}
 	var req models.VerifyEmailReq
 	if err := ctx.ReadJSON(&req); err != nil {
 		err := errors.NewError(err).BadRequest()
@@ -83,10 +71,17 @@ func VerifyEmail(ctx iris.Context) {
 		return
 	}
 	if _, err := govalidator.ValidateStruct(req); err != nil {
-		err := errors.NewError(err).BadRequest()
+		err := errors.NewError(err.(govalidator.Errors).Errors()[0]).BadRequest()
 		logger.Log(ctx, err)
 		return
 	}
+	email, ok := auth.CheckVerifyEmail(req.T)
+	if !ok {
+		err := errors.NewErrorBadRequest("Token không hợp lệ")
+		logger.Log(ctx, err)
+		return
+	}
+
 	err := auth.VerifyAccount(email, req.Code)
 	if err != nil {
 		err := errors.NewError(err).BadRequest()
@@ -175,6 +170,71 @@ func Logout(ctx iris.Context) {
 	ctx.RemoveCookie(constants.COOKIE_AUTH)
 	ctx.JSON(Response{
 		Message: "Đăng xuất thành công",
+	})
+}
+
+func ForgotPassword(ctx iris.Context) {
+	var req models.ForgotPasswordReq
+
+	if err := ctx.ReadJSON(&req); err != nil {
+		err := errors.NewErrorBadRequest("Dữ liệu không hợp lệ")
+		logger.Log(ctx, err)
+		return
+	}
+	if _, err := govalidator.ValidateStruct(req); err != nil {
+		err := errors.NewError(err).BadRequest()
+		logger.Log(ctx, err)
+		return
+	}
+	err := auth.ForgotPassword(req.Email)
+	if err != nil {
+		err := errors.NewError(err).BadRequest()
+		logger.Log(ctx, err)
+		return
+	}
+	ctx.JSON(Response{
+		Message: "Vui lòng kiểm tra email để đặt lại mật khẩu",
+	})
+}
+
+func CheckResetPassword(ctx iris.Context) {
+	token := ctx.URLParam("t")
+	if token == "" {
+		err := errors.NewErrorBadRequest("Token không hợp lệ")
+		logger.Log(ctx, err)
+		return
+	}
+	_, err := auth.CheckResetPassword(token)
+	if err != nil {
+		err := errors.NewErrorBadRequest("Token không hợp lệ")
+		logger.Log(ctx, err)
+		return
+	}
+	ctx.JSON(Response{
+		Message: "Đặt lại mật khẩu",
+	})
+}
+
+func ResetPassword(ctx iris.Context) {
+	var req models.ResetPasswordReq
+	if err := ctx.ReadJSON(&req); err != nil {
+		err := errors.NewError(err).BadRequest()
+		logger.Log(ctx, err)
+		return
+	}
+	if _, err := govalidator.ValidateStruct(req); err != nil {
+		err := errors.NewError(err.(govalidator.Errors).Errors()[0]).BadRequest()
+		logger.Log(ctx, err)
+		return
+	}
+	err := auth.ResetPassword(req)
+	if err != nil {
+		err := errors.NewError(err).BadRequest()
+		logger.Log(ctx, err)
+		return
+	}
+	ctx.JSON(Response{
+		Message: "Đặt lại mật khẩu thành công",
 	})
 }
 

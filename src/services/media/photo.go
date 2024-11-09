@@ -23,14 +23,14 @@ func GetImages(id string) ([]entities.Photo, error) {
 	return photos, nil
 }
 
-func UploadImage(file multipart.File, info *multipart.FileHeader, userId, title string) error {
+func UploadImage(file multipart.File, info *multipart.FileHeader, userId, title string) (string, error) {
 	if _, err := file.Seek(0, 0); err != nil {
-		return err
+		return "", err
 	}
 	fileType := info.Header["Content-Type"][0]
 	if constants.MineTypes[fileType] == "" {
 		err := errors.NewErrorBadRequest("File type is not supported")
-		return err
+		return "", err
 	}
 	photo := entities.Photo{
 		ID:       uuid.New().String(),
@@ -48,15 +48,15 @@ func UploadImage(file multipart.File, info *multipart.FileHeader, userId, title 
 	}
 	result, err := config.Cloudinary.Upload.Upload(ctx, file, paramImage)
 	if err != nil {
-		return err
+		return "", err
 	}
 	photo.Url = result.SecureURL
 	photo.PublicID = result.PublicID
 	_, err = config.DB.Model(&photo).Insert()
 	if err != nil {
-		return err
+		return "", err
 	}
-	return nil
+	return photo.Url, nil
 }
 
 func DeleteImage(userId, id string) error {
