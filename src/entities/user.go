@@ -14,10 +14,11 @@ type User struct {
 	FullName  string    `json:"fullName"`
 	Bio       string    `json:"bio"`
 	Gender    string    `json:"gender"`
-	Status    *bool     `json:"status"`
+	Status    string    `json:"status"`
+	Roles     []string  `pg:",array" json:"roles"`
 	Birthday  time.Time `json:"birthday"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 type UserUpdate struct {

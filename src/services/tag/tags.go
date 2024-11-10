@@ -44,7 +44,7 @@ func CreateTag(tag models.TagReq) error {
 
 func GetTag(id string) (*entities.Tag, error) {
 	tag := &entities.Tag{ID: id}
-	err := config.DB.Model(tag).WherePK().Select()
+	err := config.DB.Model(tag).WherePK().Group("id").Select()
 	if err != nil {
 		return nil, err
 	}

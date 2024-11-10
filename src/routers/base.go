@@ -17,4 +17,5 @@ func RegisterRouter(app *iris.Application) {
 	MailRouter(api)
 	TagRouter(api)
 	MediaRouter(api)
+	UserRouter(api)
 }
