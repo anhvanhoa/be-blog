@@ -33,7 +33,7 @@ func Login(body models.LoginReq) (*models.LoginRes, string, error) {
 		ID:       user.ID,
 		FullName: user.FullName,
 		UserName: user.Username,
-		Avatar:  user.Avatar,
+		Avatar:   user.Avatar,
 		Email:    user.Email,
 		Roles:    strings.Join(user.Roles, ","),
 	}, constants.SIX_MONTH)

@@ -14,7 +14,7 @@ func InsertMail(body models.MailHistory) (err error) {
 		SenderBy:     body.SenderBy,
 		Data:         body.Data,
 		Error:        body.Error,
-		Template:   body.Template,
+		Template:     body.Template,
 		Status:       body.Status,
 	}
 	_, err = config.DB.Model(&mailHistory).Insert()

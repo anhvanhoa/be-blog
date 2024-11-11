@@ -26,3 +26,13 @@ type ChangePasswordReq struct {
 	NewPassword     string `json:"newPassword" valid:"required~Mật khẩu mới không được để trống"`
 	ConfirmPassword string `json:"confirmPassword" valid:"required~Xác nhận mật khẩu không được để trống"`
 }
+
+type StatusUserReq struct {
+	ID     string `json:"id" valid:"required~ID không được để trống"`
+	Status string `json:"status" valid:"required~Trạng thái không được để trống"`
+}
+
+type RolesUserReq struct {
+	ID    string   `json:"id" valid:"required~ID không được để trống"`
+	Roles []string `json:"roles" valid:"required~Roles không được để trống"`
+}
