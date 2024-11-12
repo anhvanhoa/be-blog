@@ -9,6 +9,6 @@ import (
 
 func StatisticRouter(app router.Party) {
 	router := rbac.NewRoute(app, &rbac.Config{RelativePath: "/statistic"})
-	router.Get("/", rbac.Allow(rbac.RoleAdmin), true, controllers.Statistic) //Thông kê chung
-
+	router.Get("", rbac.Allow(rbac.RoleAdmin), true, controllers.Statistic)                        //Thông kê chung
+	router.Get("/comments-new", rbac.Allow(rbac.RoleAdmin), true, controllers.StatisticCommentNew) // Thống kê bình luận mới
 }

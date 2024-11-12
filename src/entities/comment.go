@@ -14,3 +14,13 @@ type Comment struct {
 	Status          *bool     `json:"status"`
 	CreatedAt       time.Time `json:"created_at"`
 }
+
+type StatisticComment struct {
+	tableName struct{} `pg:"comments"`
+	Id        string   `json:"id"`
+	Avatar    string   `json:"avatar"`
+	FullName  string   `json:"fullName"`
+	Content   string   `json:"content"`
+	CreatedAt string   `json:"createdAt"`
+	Title     string   `json:"title"`
+}

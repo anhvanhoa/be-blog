@@ -15,6 +15,11 @@ func MiddlewarePermission(ctx iris.Context) {
 	route := ctx.GetCurrentRoute()
 	key := route.Method() + ":" + route.Path()
 	router := routers[key]
+	if router == nil {
+		err := errors.NewErrorBadRequest("Không tìm thấy route")
+		logger.Log(ctx, err)
+		return
+	}
 	if !router.Auth {
 		ctx.Next()
 		return
