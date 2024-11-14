@@ -8,5 +8,6 @@ const (
 )
 
 const (
-	COOKIE_AUTH = "user_token"
+	COOKIE_AUTH  = "user_token"
+	COOKIE_VISIT = "visit"
 )

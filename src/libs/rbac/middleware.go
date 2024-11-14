@@ -6,12 +6,20 @@ import (
 	"be-blog/src/libs/jwt"
 	"be-blog/src/libs/logger"
 	"be-blog/src/services/session"
+	"net/http"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
 )
 
 func MiddlewarePermission(ctx iris.Context) {
+	id := ctx.GetCookie(constants.COOKIE_VISIT)
+	if id == "" {
+		id = uuid.New().String()
+		ctx.SetCookieKV(constants.COOKIE_VISIT, id, iris.CookieHTTPOnly(true), iris.CookiePath("/"), iris.CookieSameSite(http.SameSiteNoneMode), CookieSecure(), iris.CookieDomain(ctx.Domain()))
+	}
 	route := ctx.GetCurrentRoute()
 	key := route.Method() + ":" + route.Path()
 	router := routers[key]
@@ -72,4 +80,10 @@ func checkAdmin(roles ...string) bool {
 		}
 	}
 	return false
+}
+
+func CookieSecure() iris.CookieOption {
+	return func(_ *context.Context, c *http.Cookie, op uint8) {
+		c.Secure = true
+	}
 }

@@ -7,6 +7,8 @@ toolchain go1.23.2
 require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/cloudinary/cloudinary-go/v2 v2.9.0
+	github.com/gorilla/websocket v1.5.3
+	github.com/iris-contrib/middleware/cors v0.0.0-20240926134003-a252b7a49da9
 )
 
 require (
@@ -35,7 +37,6 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/iris-contrib/middleware/cors v0.0.0-20240926134003-a252b7a49da9
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect

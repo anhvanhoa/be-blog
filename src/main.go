@@ -27,12 +27,12 @@ func main() {
 	})
 	app.HandleDir("/images", "./uploads")
 	crs := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000", "http://vananh.com:3000", "http://vananh.com"},
+		AllowedOrigins:   []string{"http://localhost:3000", "http://vananh.com:3000", "http://vananh.com", "http://localhost:8000"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowCredentials: true,
 	})
 	app.UseRouter(crs)
 	config.InitMail()
 	routers.RegisterRouter(app)
-	app.Listen(fmt.Sprintf(":%d", viper.GetInt("port")))
+	app.Listen(fmt.Sprintf(":%d", viper.GetInt("port")), iris.WithoutServerError(iris.ErrServerClosed))
 }

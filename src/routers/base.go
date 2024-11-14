@@ -2,11 +2,13 @@ package routers
 
 import (
 	"be-blog/src/libs/rbac"
+	"be-blog/src/ws"
 
 	"github.com/kataras/iris/v12"
 )
 
 func RegisterRouter(app *iris.Application) {
+	ws.RegisterWs(app)
 	api := app.Party("/api")
 	api.Use(rbac.MiddlewarePermission)
 	registerBlogRouter(api)
