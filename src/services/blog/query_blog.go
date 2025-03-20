@@ -140,6 +140,7 @@ func GetBlogById(id string) (models.BlogByID, error) {
 		c.name as category,
 		c.slug as slug_category,
 		b.updated_at,
+		b.created_at,
 		b.status,
 		COALESCE(
 		(

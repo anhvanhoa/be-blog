@@ -46,11 +46,10 @@ type BlogBySlug struct {
 }
 
 type BlogByID struct {
-	ContentMd   string    `json:"contentMd"`
-	ContentHtml string    `json:"contentHtml"`
-	Security    string    `json:"security"`
-	CategoryId  string    `json:"categoryId"`
-	CreatedAt   time.Time `json:"createdAt"`
+	ContentMd   string `json:"contentMd"`
+	ContentHtml string `json:"contentHtml"`
+	Security    string `json:"security"`
+	CategoryId  string `json:"categoryId"`
 	Blog
 }
 

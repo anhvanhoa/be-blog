@@ -22,7 +22,7 @@ func Me(ctx iris.Context) {
 	data.Avatar = profile.Avatar
 	ctx.JSON(Response{
 		Data:    data,
-		Message: "Hello",
+		Message: "Lấy thông tin thành công",
 	})
 }
 
