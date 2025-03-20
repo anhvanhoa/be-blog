@@ -17,8 +17,8 @@ import (
 func MiddlewarePermission(ctx iris.Context) {
 	id := ctx.GetCookie(constants.COOKIE_VISIT)
 	if id == "" {
-		id = uuid.New().String()
-		ctx.SetCookieKV(constants.COOKIE_VISIT, id, iris.CookieHTTPOnly(true), iris.CookiePath("/"), iris.CookieSameSite(http.SameSiteNoneMode), CookieSecure(), iris.CookieDomain(ctx.Domain()))
+		id, _ := uuid.NewV7()
+		ctx.SetCookieKV(constants.COOKIE_VISIT, id.String(), iris.CookieHTTPOnly(true), iris.CookiePath("/"), iris.CookieSameSite(http.SameSiteNoneMode), CookieSecure(), iris.CookieDomain(ctx.Domain()))
 	}
 	route := ctx.GetCurrentRoute()
 	key := route.Method() + ":" + route.Path()

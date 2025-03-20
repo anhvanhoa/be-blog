@@ -64,9 +64,10 @@ func RenderTemplateString(body string, data map[string]interface{}) (string, err
 }
 
 func SendMail(payload PayloadMail) {
+	id, _ := uuid.NewV7()
 	template := GetTemplate(payload.Template)
 	mailHistory := models.MailHistory{
-		Id:           uuid.New().String(),
+		Id:           id.String(),
 		MailProvider: payload.From,
 		ReceivedMail: "unknown",
 		SenderBy:     "system",

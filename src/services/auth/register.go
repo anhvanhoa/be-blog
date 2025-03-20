@@ -28,7 +28,7 @@ func Register(body models.RegisterReq) (*models.RegisterRes, error) {
 	if err != nil {
 		return nil, err
 	}
-	Id := uuid.New()
+	Id, _ := uuid.NewV7()
 	newUser := entities.Auth{
 		ID:       Id.String(),
 		Username: strings.ToLower(body.Username),

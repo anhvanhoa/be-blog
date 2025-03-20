@@ -3,8 +3,8 @@ package rbac
 import "strings"
 
 const (
-	RoleAdmin = "ADMIN"
-	RoleUser  = "USER"
+	RoleAdmin = "admin"
+	RoleUser  = "user"
 )
 
 func Allow(roles ...string) FunPermission {
